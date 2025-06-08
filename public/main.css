@@ -1,0 +1,16 @@
+td, th {
+	text-align: center;
+}
+
+.tble th {
+	text-align: left;
+}
+
+section {
+	margin-bottom: 2em;
+}
+
+.history {
+	overflow: scroll;
+	height: 10em;
+}
