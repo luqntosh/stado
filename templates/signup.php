@@ -1,7 +1,7 @@
 <?php require "../templates/partials/header_login.php"; ?>
 
 <div class="top_space">
-<h3>Rejestracja Konta</h3>
+<h3>Załóż Konto</h3>
 </div>
 <form method="POST">
     <label for="email">Email</label>

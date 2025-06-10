@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-require "../includes/database.php";
 require "../includes/filters.php";
 require "../includes/lut.php";
 
@@ -23,7 +22,7 @@ function handle_get_request()
     $connection = get_connection();
 
     $statement = $connection->prepare(
-        "SELECT id, ins_date, state, due_date FROM cows WHERE id = :id"
+        "SELECT id, cow_id, ins_date, state, due_date FROM cows WHERE cow_id = :id"
     );
     $statement->bindValue(":id", $cow_id, PDO::PARAM_STR);
     $statement->execute();
@@ -37,7 +36,7 @@ function handle_get_request()
     $statement = $connection->prepare(
         "SELECT id, cow_id, date, event FROM history WHERE cow_id = :id"
     );
-    $statement->bindValue(":id", $cow_id, PDO::PARAM_STR);
+    $statement->bindValue(":id", $cow["id"], PDO::PARAM_STR);
     $statement->execute();
     $history = $statement->fetchAll(PDO::FETCH_ASSOC);
     $history = array_map(

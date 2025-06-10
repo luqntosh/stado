@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 require "../includes/filters.php";
-require "../includes/session.php";
-require "../includes/database.php";
 
 function render_signup(array $error_messages)
 {
@@ -15,7 +13,7 @@ function handle_get_request()
     render_signup($msgs);
 }
 
-function handle_post_request()
+function handle_post_request(PDO $connection)
 {
     $errors = [];
     if (!validate_email($_POST["email"])) {
@@ -29,7 +27,6 @@ function handle_post_request()
         redirect("/signup");
     }
 
-    $connection = get_connection();
     $user = get_user($connection, $_POST["email"]);
     if ($user) {
         $_SESSION["signup_errors"] = [
@@ -57,7 +54,7 @@ function handle_post_request()
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     handle_get_request();
 } else {
-    handle_post_request();
+    handle_post_request($connection);
 }
 
 ?>

@@ -8,7 +8,7 @@
             <table class="striped tble">
             <tr>
                 <th scope="row">Numer identyfikacyjny:</th>
-                <td><?= $cow["id"] ?></td>
+                <td><?= $cow["cow_id"] ?></td>
             </tr>
             <tr>
                 <th scope="row">Data inseminacji:</th>
@@ -25,23 +25,23 @@
             </table>
         </section>
             <?php if (!empty($history)): ?>
-            <section class="history">
             <h6>Historia</h6>
+            <section class="history">
             <table class="striped">
-            <thead>
-                <tr>
-                <th>Data zdarzenia</th>
-                <th>Zdarzenie</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($history as $event): ?>
-                <tr>
-                    <td><?= $event["date"] ?></td>
-                    <td><?= $event["event"] ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
+                <thead>
+                    <tr>
+                    <th>Data zdarzenia</th>
+                    <th>Zdarzenie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($history as $event): ?>
+                    <tr>
+                        <td><?= $event["date"] ?></td>
+                        <td><?= $event["event"] ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
             </section>
             <?php endif; ?>

@@ -13,8 +13,9 @@
     <tbody>
     <?php foreach ($cows as $cow): ?>
     <tr>
-
-        <td><a href="/cow?id=<?= $cow["id"] ?>"><?= $cow["id"] ?></a></td>
+        <td><a href="/cow?id=<?= $cow["cow_id"] ?>"><?= $cow[
+    "cow_id"
+] ?></a></td>
         <td><?= $cow["ins_date"] ?></td>
         <td><?= $cow["state"] ?></td>
         <td><?= $cow["due_date"] ?></td>

@@ -6,6 +6,8 @@ session_start();
 // require "../includes/errors.php";
 require "../includes/request.php";
 require "../includes/auth.php";
+require "../includes/database.php";
+require "../includes/session.php";
 
 $routes = [
     "/" => [
@@ -55,6 +57,13 @@ if (!$auth and $route["auth"]) {
     redirect("/login");
 } elseif ($auth and !$route["auth"]) {
     redirect("/");
+}
+
+$connection = get_connection();
+if ($auth) {
+    $user = get_user($connection);
+} else {
+    $user = null;
 }
 
 require "../routes/" . $route["controller"];

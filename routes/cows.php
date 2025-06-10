@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-require "../includes/database.php";
-
 function render_cows(array $cows)
 {
     require "../templates/cows.php";
@@ -11,7 +9,7 @@ function render_cows(array $cows)
 $connection = get_connection();
 
 $statement = $connection->prepare(
-    "SELECT id, ins_date, state, due_date FROM cows"
+    "SELECT id, cow_id, ins_date, state, due_date FROM cows"
 );
 $statement->execute();
 $cows = $statement->fetchAll(PDO::FETCH_ASSOC);
