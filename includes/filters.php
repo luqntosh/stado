@@ -18,3 +18,14 @@ function validate_date(string $date): ?int
     }
     return null;
 }
+
+function validate_email(string $emial)
+{
+    return filter_var($emial, FILTER_VALIDATE_EMAIL);
+}
+
+function validate_password(string $password)
+{
+    $password = trim($password);
+    return strlen($password) > 7;
+}

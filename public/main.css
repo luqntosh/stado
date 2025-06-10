@@ -1,16 +1,25 @@
-td, th {
-	text-align: center;
+th {
+    font-weight: bold;
+}
+
+td,
+th {
+    text-align: center;
 }
 
 .tble th {
-	text-align: left;
+    text-align: left;
 }
 
 section {
-	margin-bottom: 2em;
+    margin-bottom: 2em;
 }
 
 .history {
-	overflow: scroll;
-	height: 10em;
+    overflow: scroll;
+    height: 10em;
+}
+
+.top_space {
+    margin-top: 5em;
 }

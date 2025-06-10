@@ -1,15 +1,17 @@
 <?php
 
 declare(strict_types=1);
-// require "../includes/errors.php";
-require "../routes/routes.php";
+session_start();
 
-// session_start();
+// require "../includes/errors.php";
+require "../includes/request.php";
+require "../includes/auth.php";
+
 $routes = [
     "/" => [
         "controller" => "cows.php",
         "methods" => ["GET"],
-        "auth" => false,
+        "auth" => true,
     ],
     "/cows" => [
         "controller" => "cows.php",
@@ -21,6 +23,21 @@ $routes = [
         "methods" => ["GET", "POST"],
         "auth" => true,
     ],
+    "/login" => [
+        "controller" => "login.php",
+        "methods" => ["GET", "POST"],
+        "auth" => false,
+    ],
+    "/signup" => [
+        "controller" => "signup.php",
+        "methods" => ["GET", "POST"],
+        "auth" => false,
+    ],
+    "/logout" => [
+        "controller" => "logout.php",
+        "methods" => ["GET"],
+        "auth" => true,
+    ],
 ];
 
 $path = parse_url($_SERVER["REQUEST_URI"])["path"];
@@ -30,6 +47,13 @@ if (!$route) {
     redirect("/");
 }
 if (!valid_request_method($route["methods"])) {
+    redirect("/");
+}
+
+$auth = auth();
+if (!$auth and $route["auth"]) {
+    redirect("/login");
+} elseif ($auth and !$route["auth"]) {
     redirect("/");
 }
 

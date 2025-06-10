@@ -1,82 +1,68 @@
-<!DOCTYPE html>
-<html lang="pl">
+<?php require "../templates/partials/header.php"; ?>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stado</title>
- <link rel="stylesheet" href="pico.min.css">
- <link rel="stylesheet" href="main.css">
-</head>
-
-<body>
-  
-  <main class="container">
-    <h3><a href="/">Stado</a></h3>
-    <div class="grid">
-      <div></div>
-      <div>
+<div class="grid">
+    <div></div>
+    <div>
         <section>
-          <h6>Dane</h6>
-          <table class="striped tble">
-           <tr>
-             <th scope="row">Numer identyfikacyjny:</th>
-             <td><?= $cow['id'] ?></td>
-           </tr>
-           <tr>
-             <th scope="row">Data inseminacji:</th>
-             <td><?= $cow['ins_date'] ?></td>
-           </tr>
-           <tr>
-             <th scope="row">Status:</th>
-             <td><?= $cow['state'] ?></td>
-           </tr>
-           <tr>
-             <th scope="row">Data wycielenia:</th>
-             <td><?= $cow['due_date'] ?></td>
-           </tr>
-          </table>
+            <h6>Dane</h6>
+            <table class="striped tble">
+            <tr>
+                <th scope="row">Numer identyfikacyjny:</th>
+                <td><?= $cow["id"] ?></td>
+            </tr>
+            <tr>
+                <th scope="row">Data inseminacji:</th>
+                <td><?= $cow["ins_date"] ?></td>
+            </tr>
+            <tr>
+                <th scope="row">Status:</th>
+                <td><?= $cow["state"] ?></td>
+            </tr>
+            <tr>
+                <th scope="row">Data wycielenia:</th>
+                <td><?= $cow["due_date"] ?></td>
+            </tr>
+            </table>
         </section>
-          <?php if(!empty($history)): ?>
-          <section class="history">
-          <h6>Historia</h6>
-          <table class="striped">
+            <?php if (!empty($history)): ?>
+            <section class="history">
+            <h6>Historia</h6>
+            <table class="striped">
             <thead>
-              <tr>
+                <tr>
                 <th>Data zdarzenia</th>
                 <th>Zdarzenie</th>
-              </tr>
+                </tr>
             </thead>
             <tbody>
-              <?php foreach ($history as $event): ?>
+                <?php foreach ($history as $event): ?>
                 <tr>
-                  <td><?= $event['date'] ?></td>
-                  <td><?= $event['event'] ?></td>
+                    <td><?= $event["date"] ?></td>
+                    <td><?= $event["event"] ?></td>
                 </tr>
-              <?php endforeach ?>
+                <?php endforeach; ?>
             </tbody>
-          </table>
-          </section>
-          <?php endif ?>
+            </table>
+            </section>
+            <?php endif; ?>
         <section>
-          <h6>Dodaj zdarzenie</h6>
-          <form method="POST">
-            <input type="text" name="cow_id" hidden value="<?= $cow['id']?>">
-            <input type="date" name="event_date" required value="<?= date('Y-m-d')?>">
+            <h6>Dodaj zdarzenie</h6>
+            <form method="POST">
+            <input type="text" name="cow_id" hidden value="<?= $cow["id"] ?>">
+            <input type="date" name="event_date" required value="<?= date(
+                "Y-m-d"
+            ) ?>">
             <select name="event" required>
                 <option selected disabled value="">Wybierz zdarzenie</option>
-              <?php foreach ($events as $event): ?>
+                <?php foreach ($events as $event): ?>
                 <option value="<?= $event ?>"><?= $event ?></option>
-              <?php endforeach ?>
+                <?php endforeach; ?>
             </select>
             <button type="submit">Dodaj</button>
-          </form>
+            </form>
         </section>
-      </div>
-      <div></div>
     </div>
-  </main>
-</body>
+    <div></div>
+</div>
 
-
-</html>
+<?php require "../templates/partials/footer.php"; ?>
