@@ -9,7 +9,7 @@ function render_cows(array $cows)
 $connection = get_connection();
 
 $statement = $connection->prepare(
-    "SELECT id, cow_id, ins_date, state, due_date, owner_id FROM cows where owner_id = :owner_id"
+    "SELECT id, cow_id, ins_date, status, due_date, owner_id FROM cows where owner_id = :owner_id"
 );
 $statement->execute([":owner_id" => $user["id"]]);
 $cows = $statement->fetchAll(PDO::FETCH_ASSOC);

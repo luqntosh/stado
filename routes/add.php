@@ -23,19 +23,19 @@ function handle_post_request(PDO $connection, array $user)
         "options" => "validate_cow_id",
     ]);
     if ($cow_id === false || $cow_id === null) {
-        $errors[] = "Numer indentyfikacyjny musi zaiwerać 4 cyfry.";
+        $errors[] = "Numer indentyfikacyjny musi zawierać 14 znaków!";
     }
 
     if ($_POST["ins_date"]) {
         $date = validate_date($_POST["ins_date"]);
         if (!$date) {
-            $errors[] = "Data nie jest poprawna.";
+            $errors[] = "Data nie jest poprawna!";
         }
     }
 
     $statuses = get_statuses();
     if (!in_array($_POST["status"], $statuses)) {
-        $erros[] = "Nie ma takiego statusu.";
+        $erros[] = "Nie ma takiego stanu!";
     }
 
     if ($errors) {
@@ -44,13 +44,11 @@ function handle_post_request(PDO $connection, array $user)
     }
 
     if (array_search($_POST["status"], $statuses) > 0 && !$_POST["ins_date"]) {
-        $_SESSION["add_errors"] = ["Dla wybranego statusu wymagana jest data."];
+        $_SESSION["add_errors"] = ["Dla wybranego stanu wymagana jest data."];
         redirect("/add");
     }
 
-    $statement = $connection->prepare(
-        "SELECT cow_id, owner_id FROM cows WHERE cow_id = :id and owner_id = :owner_id"
-    );
+    $statement = $connection->prepare("SELECT cow_id, owner_id FROM cows WHERE cow_id = :id and owner_id = :owner_id");
     $statement->execute([":id" => $cow_id, ":owner_id" => $user["id"]]);
     $result = $statement->fetch(PDO::FETCH_ASSOC);
     if ($result) {
@@ -61,12 +59,12 @@ function handle_post_request(PDO $connection, array $user)
     $next_event = "";
 
     $statement = $connection->prepare(
-        "INSERT INTO cows(cow_id, ins_date, state, owner_id, due_date, next_event) VALUES(:id, :ins_date, :state, :owner_id, :due_date, :next_event)"
+        "INSERT INTO cows(cow_id, ins_date, status, owner_id, due_date, next_event) VALUES(:id, :ins_date, :status, :owner_id, :due_date, :next_event)"
     );
     $statement->execute([
         ":id" => $cow_id,
         ":ins_date" => $_POST["ins_date"],
-        ":state" => $_POST["status"],
+        ":status" => $_POST["status"],
         ":owner_id" => $user["id"],
         ":due_date" => $cows_due,
         ":next_event" => $next_event,

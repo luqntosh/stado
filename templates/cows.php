@@ -15,19 +15,12 @@
         <tbody>
         <?php foreach ($cows as $cow): ?>
         <tr>
-            <td><a href="/cow?id=<?= $cow["cow_id"] ?>"><?= $cow[
-    "cow_id"
-] ?></a></td>
+            <td><a href="/cow?id=<?= $cow["cow_id"] ?>"><?= $cow["cow_id"] ?></a></td>
             <td><?= $cow["ins_date"] ?></td>
             <td><?= $cow["state"] ?></td>
             <td><?= $cow["due_date"] ?></td>
             <td><?= isset($cow["action"]) ? "🔴" : "" ?></td>
-            <!-- <td><button class="outline" onclick="delete_cow(<?= $cow[
-                "cow_id"
-            ] ?>)">&#10060</button></td> -->
-            <td><a onclick="delete_cow(<?= $cow["id"] ?>, <?= $cow[
-    "cow_id"
-] ?>)">Usuń</a></td>
+            <td><a onclick="delete_cow(<?= $cow["id"] ?>, '<?= $cow["cow_id"] ?>');">Usuń</a></td>
         </tr>
         <?php endforeach; ?>
         </tbody>

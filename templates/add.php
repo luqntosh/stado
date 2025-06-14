@@ -5,11 +5,11 @@
     <div>
         <h3>Dane krowy:</h3>
         <form method="POST">
-            <label for="id">Numer identyfikacyjny</label>
+            <label for="id">Numer identyfikacyjny:<br>(np. PL005669126852)</label>
             <input type="text" name="id" required>
-            <label for="ins_date">Data inseminacji</label>
+            <label for="ins_date">Data inseminacji:</label>
             <input type="date" name="ins_date">
-            <label for="status">Status krowy</label>
+            <label for="status">Stan krowy:</label>
             <select name="status" required>
                 <option selected disabled value="">Wybierz status</option>
                 <?php foreach ($statuses as $status): ?>

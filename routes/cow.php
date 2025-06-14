@@ -20,7 +20,7 @@ function handle_get_request(PDO $connection, array $user)
     }
 
     $statement = $connection->prepare(
-        "SELECT id, cow_id, ins_date, state, due_date, owner_id FROM cows WHERE cow_id = :id AND owner_id = :owner_id"
+        "SELECT id, cow_id, ins_date, status, due_date, owner_id FROM cows WHERE cow_id = :id AND owner_id = :owner_id"
     );
     $statement->bindValue(":id", $cow_id, PDO::PARAM_STR);
     $statement->bindValue(":owner_id", $user["id"], PDO::PARAM_INT);
@@ -33,7 +33,7 @@ function handle_get_request(PDO $connection, array $user)
     $cow = array_map("htmlspecialchars", $cow);
 
     $statement = $connection->prepare(
-        "SELECT id, cow_id, date, event FROM history WHERE cow_id = :id"
+        "SELECT id, cow_id, date, event, text FROM history WHERE cow_id = :id"
     );
     $statement->bindValue(":id", $cow["id"], PDO::PARAM_STR);
     $statement->execute();
@@ -75,12 +75,13 @@ function handle_post_request(PDO $connection, array $user)
     $timestamp = strtotime($_POST["event_date"]);
     $date = date("d-m-Y", $timestamp);
     $statement = $connection->prepare(
-        "INSERT INTO history(cow_id, date, event) VALUES(:cow_id, :date, :event)"
+        "INSERT INTO history(cow_id, date, event, text) VALUES(:cow_id, :date, :event, :text)"
     );
     $statement->execute([
         ":cow_id" => $_POST["cow_id"],
         ":date" => $date,
         ":event" => $_POST["event"],
+        ":text" => htmlspecialchars($_POST["text"]),
     ]);
     redirect("/cow?id={$cow["cow_id"]}");
 }

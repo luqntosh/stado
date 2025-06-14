@@ -51,6 +51,22 @@ function handle_post_request(PDO $connection)
     redirect("/");
 }
 
+function create_user(PDO $connection, array $data)
+{
+    extract($data);
+    $statement = $connection->prepare(
+        "INSERT INTO users(email, password, last_update, preg_check, dry_check, due_check) VALUES(:email, :password, :last_update, :preg_check, :dry_check, :due_check)"
+    );
+    return $statement->execute([
+        ":email" => $email,
+        ":password" => $password,
+        ":last_update" => $last_update,
+        ":preg_check" => $preg_check,
+        ":dry_check" => $dry_check,
+        ":due_check" => $due_check,
+    ]);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     handle_get_request();
 } else {

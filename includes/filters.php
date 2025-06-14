@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 function validate_cow_id($value): ?string
 {
-    if (preg_match("/^[0-9]{4}$/", $value)) {
+    if (preg_match("/^[A-Z]{2}[0-9]{12}$/", $value)) {
         return $value;
     } else {
         return null;
