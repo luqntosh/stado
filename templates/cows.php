@@ -1,28 +1,56 @@
 <?php require "../templates/partials/header.php"; ?>
 
-<table class="striped">
-    <thead>
-    <tr>
-        <th>Numer identyfikacyjny</th>
-        <th>Data inseminacji</th>
-        <th>Status</th>
-        <th>Data wycielenia</th>
-        <th>Możliwa akcja</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($cows as $cow): ?>
-    <tr>
-        <td><a href="/cow?id=<?= $cow["cow_id"] ?>"><?= $cow[
+<section>
+    <table class="striped">
+        <thead>
+        <tr>
+            <th>Numer identyfikacyjny</th>
+            <th>Data inseminacji</th>
+            <th>Status</th>
+            <th>Data wycielenia</th>
+            <th>Możliwa akcja</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($cows as $cow): ?>
+        <tr>
+            <td><a href="/cow?id=<?= $cow["cow_id"] ?>"><?= $cow[
     "cow_id"
 ] ?></a></td>
-        <td><?= $cow["ins_date"] ?></td>
-        <td><?= $cow["state"] ?></td>
-        <td><?= $cow["due_date"] ?></td>
-        <td><?= isset($cow["action"]) ? "🔴" : "" ?></td>
-    </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-
+            <td><?= $cow["ins_date"] ?></td>
+            <td><?= $cow["state"] ?></td>
+            <td><?= $cow["due_date"] ?></td>
+            <td><?= isset($cow["action"]) ? "🔴" : "" ?></td>
+            <!-- <td><button class="outline" onclick="delete_cow(<?= $cow[
+                "cow_id"
+            ] ?>)">&#10060</button></td> -->
+            <td><a onclick="delete_cow(<?= $cow["id"] ?>, <?= $cow[
+    "cow_id"
+] ?>)">Usuń</a></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>
+<div class="right">
+    <a href="/add">Dodaj krowę</a>
+</div>
+ <script src="cows.js"></script>
+ <dialog id="del_dialog">
+    <article class="small_pad">
+        <hr>
+        <form id="del_form" method="POST" action="/del">
+            <label for="id" id="label_id"></label>
+            <p><strong>Czynności nie da się cofnąć!</strong></p>
+            <input id="del_id" name="id" type="number" hidden>
+            <div class="grid top_space">
+                <div></div>
+                <div></div>
+                <button type="button" onclick="close_dialog()">Nie</button>
+                <button type="submit">Tak</button>
+            </div>
+        </form>
+    </article>
+ </dialog>
 <?php require "../templates/partials/footer.php"; ?>

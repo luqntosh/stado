@@ -11,6 +11,9 @@ function inital_migrate(): void {}
 function get_user(PDO $connection, string $email = ""): array|false
 {
     if ($email === "") {
+        if (!isset($_SESSION["user"])) {
+            return false;
+        }
         $email = $_SESSION["user"];
     }
     $statment = $connection->prepare(

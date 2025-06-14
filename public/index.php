@@ -4,8 +4,8 @@ declare(strict_types=1);
 session_start();
 
 // require "../includes/errors.php";
+require "../includes/utils.php";
 require "../includes/request.php";
-require "../includes/auth.php";
 require "../includes/database.php";
 require "../includes/session.php";
 
@@ -25,10 +25,25 @@ $routes = [
         "methods" => ["GET", "POST"],
         "auth" => true,
     ],
+    "/add" => [
+        "controller" => "add.php",
+        "methods" => ["GET", "POST"],
+        "auth" => true,
+    ],
+    "/del" => [
+        "controller" => "del.php",
+        "methods" => ["POST"],
+        "auth" => true,
+    ],
     "/login" => [
         "controller" => "login.php",
         "methods" => ["GET", "POST"],
         "auth" => false,
+    ],
+    "/account" => [
+        "controller" => "account.php",
+        "methods" => ["GET", "POST"],
+        "auth" => true,
     ],
     "/signup" => [
         "controller" => "signup.php",
@@ -52,18 +67,14 @@ if (!valid_request_method($route["methods"])) {
     redirect("/");
 }
 
-$auth = auth();
-if (!$auth and $route["auth"]) {
+$connection = get_connection();
+$connection->exec("PRAGMA foreign_keys=ON");
+$user = get_user($connection);
+
+if ($user == $route["auth"]) {
+    require "../routes/" . $route["controller"];
+} elseif ($route["auth"]) {
     redirect("/login");
-} elseif ($auth and !$route["auth"]) {
+} else {
     redirect("/");
 }
-
-$connection = get_connection();
-if ($auth) {
-    $user = get_user($connection);
-} else {
-    $user = null;
-}
-
-require "../routes/" . $route["controller"];
