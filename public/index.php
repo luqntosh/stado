@@ -1,6 +1,6 @@
 <?php
 
-// require "../lib/errors.php";
+require "../lib/errors.php";
 require "../lib/utils.php";
 require "../lib/router.php";
 require "../lib/database.php";

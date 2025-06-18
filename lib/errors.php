@@ -17,11 +17,5 @@ function error_handler(int $code, string $message, string $file, int $line, arra
     exit();
 }
 
-function terminate_method(int $code)
-{
-    http_response_code($code);
-    exit();
-}
-
 set_exception_handler("exception_handler");
 set_error_handler("error_handler");
