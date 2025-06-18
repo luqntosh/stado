@@ -3,24 +3,25 @@ declare(strict_types=1);
 
 ob_start();
 
-function exception_handler(Throwable $exception): void
+function exception_handler(Throwable $exception)
 {
     ob_end_clean();
     http_response_code(500);
-    header("Content-Type: text/plain");
-    print $exception;
     exit();
 }
 
-function error_handler(int $code, string $message, string $file, int $line): void
+function error_handler(int $code, string $message, string $file, int $line, array $context)
 {
     ob_end_clean();
     http_response_code(500);
-    header("Content-Type: text/plain");
-    print "Error: ${message} in ${file}:${line}\n";
-    debug_print_backtrace();
     exit();
 }
 
-set_exception_handler("sl_exception_handler");
-set_error_handler("sl_error_handler");
+function terminate_method(int $code)
+{
+    http_response_code($code);
+    exit();
+}
+
+set_exception_handler("exception_handler");
+set_error_handler("error_handler");
