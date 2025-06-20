@@ -8,6 +8,7 @@ require "../templates/components/guest-header.php";
     <h3>Logowanie</h3>
 </div>
 <form method="POST" action="/account-login">
+    <input type="text" name="token" value="<?= $token ?>" hidden>
     <label for="email">Email</label>
     <input type="email" name="email" required>
     <label for="password">Hasło</label>

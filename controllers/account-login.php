@@ -3,6 +3,9 @@
 declare(strict_types=1);
 require "../lib/validators.php";
 
+if (!consume_token($_POST["token"])) {
+    redirect("/login");
+}
 $errors = [];
 $msg = "Email lub hasło nie jest poprawne.";
 if (!validate_email($_POST["email"])) {

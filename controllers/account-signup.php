@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 require "../lib/validators.php";
 
+if (!consume_token($_POST["token"])) {
+    redirect("/signup");
+}
+
 $errors = [];
 if (!validate_email($_POST["email"])) {
     $errors[] = "Adress email nie jest poprawny.";

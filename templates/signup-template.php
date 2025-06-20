@@ -9,6 +9,7 @@ require "../templates/components/guest-header.php";
 <h3>Załóż Konto</h3>
 </div>
 <form method="POST" action="/account-signup">
+    <input type="text" name="token" value="<?= $token ?>" hidden>
     <label for="email">Email</label>
     <input type="email" name="email" required>
     <label for="password">Hasło</label>
