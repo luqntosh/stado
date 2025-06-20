@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-
+session_save_path("../tmp");
 session_start();
 
 // require "../lib/errors.php";
