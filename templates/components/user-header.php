@@ -18,10 +18,11 @@
     <section>
         <nav>
             <ul>
-            <li><strong><a href="/">Stado</a></strong></li>
+                <li><strong><a href="/">Stado</a></strong></li>
             </ul>
             <ul>
-            <li><a href="/logout">Wyloguj</a></li>
+                <li><a href="/account">Konto</a></li>
+                <li><a href="/logout">Wyloguj</a></li>
             </ul>
         </nav>
   </section>

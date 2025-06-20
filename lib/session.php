@@ -1,13 +1,33 @@
 <?php
 declare(strict_types=1);
 
-function get_flash_messages(string $name): array
+function set_flash_messages(string $name, array $messages)
 {
-    if (!isset($_SESSION[$name])) {
+    $_SESSION["_flash"][$name] = $messages;
+}
+
+function consume_flash_messages(string $name): array
+{
+    if (!isset($_SESSION["_flash"][$name])) {
         return [];
     }
-    $data = $_SESSION[$name];
-    unset($_SESSION[$name]);
+    $data = $_SESSION["_flash"][$name];
+    unset($_SESSION["_flash"][$name]);
+    return $data;
+}
+
+function set_form_data(string $name, array $data)
+{
+    $_SESSION["_form"][$name] = $data;
+}
+
+function consume_form_data(string $name): array
+{
+    if (!isset($_SESSION["_form"][$name])) {
+        return [];
+    }
+    $data = array_map("htmlspecialchars", $_SESSION["_form"][$name]);
+    unset($_SESSION["_form"][$name]);
     return $data;
 }
 

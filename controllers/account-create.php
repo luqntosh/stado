@@ -15,14 +15,13 @@ if (!validate_password($_POST["password"])) {
     $errors[] = "Hasło musi zawierać co najmniej 8 znaków.";
 }
 if (!empty($errors)) {
-    $_SESSION["signup_errors"] = $errors;
-    redirect("/signup");
+    goto error_route;
 }
 
 $user = get_user($connection, $_POST["email"]);
 if ($user) {
-    $_SESSION["signup_errors"] = ["Konto o tym adresie e-mail juz instnieje."];
-    redirect("/signup");
+    $errors[] = "Konto o tym adresie e-mail juz instnieje.";
+    goto error_route;
 }
 
 $user = [
@@ -36,8 +35,13 @@ $user["last_update"] = time();
 
 $success = create_user($connection, $user);
 if (!$success) {
-    $_SESSION["signup_errors"] = ["Błąd podczas tworzenia konta! Spróbuj ponownie później."];
-    redirect("/signup");
+    $errors[] = "Błąd podczas tworzenia konta! Spróbuj ponownie później.";
+    goto error_route;
 }
 $_SESSION["user"] = $_POST["email"];
 redirect("/");
+
+error_route:
+set_flash_messages("signup_errors", $errors);
+set_form_data("signup", ["email" => $_POST["email"]]);
+redirect("/signup");

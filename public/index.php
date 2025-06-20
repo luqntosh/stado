@@ -12,7 +12,8 @@ require "../lib/database.php";
 $routes = [
     "/" => ["controller" => "cows.php", "method" => "GET", "auth" => true],
     "/signup" => ["controller" => "signup.php", "method" => "GET", "auth" => false],
-    "/account-signup" => ["controller" => "account-signup.php", "method" => "POST", "auth" => false],
+    "/account" => ["controller" => "account.php", "method" => "GET", "auth" => true],
+    "/account-create" => ["controller" => "account-create.php", "method" => "POST", "auth" => false],
     "/account-login" => ["controller" => "account-login.php", "method" => "POST", "auth" => false],
     "/login" => ["controller" => "login.php", "method" => "GET", "auth" => false],
     "/logout" => ["controller" => "logout.php", "method" => "GET", "auth" => true],
@@ -30,6 +31,7 @@ if (!valid_request_method($route["method"])) {
 
 $connection = get_connection();
 $user = get_user($connection);
+date_default_timezone_set("Europe/Warsaw");
 
 if ($user == $route["auth"]) {
     require "../controllers/{$route["controller"]}";

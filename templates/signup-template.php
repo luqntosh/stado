@@ -8,10 +8,10 @@ require "../templates/components/guest-header.php";
 <div class="top_space">
 <h3>Załóż Konto</h3>
 </div>
-<form method="POST" action="/account-signup">
-    <input type="text" name="token" value="<?= $token ?>" hidden>
+<form method="POST" action="/account-create">
+    <input type="text" name="token" value="<?= $token ?>" hidden required>
     <label for="email">Email</label>
-    <input type="email" name="email" required>
+    <input type="email" name="email" value="<?= $email ?? "" ?>" required>
     <label for="password">Hasło</label>
     <input type="password" name="password" required>
     <button type="submit">Utwórz konto</button>
