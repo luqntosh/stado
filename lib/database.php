@@ -35,6 +35,25 @@ function get_user(PDO $connection, ?string $email = null): array|false
     return $statment->fetch(PDO::FETCH_ASSOC);
 }
 
+function create_cow(PDO $connection, array $cow_data)
+{
+    $statement = $connection->prepare(
+        "INSERT INTO cows(cow_id, name, ins_date, status, owner_id, due_date, next_event) VALUES(:id, :name, :ins_date, :status, :owner_id, :due_date, :next_event)"
+    );
+    return $statement->execute($cow_data);
+}
+
+function get_cow(PDO $connection, int $user_id, string $cow_id): array
+{
+    $statement = $connection->prepare("SELECT * FROM cows WHERE cow_id = :id and owner_id = :owner_id");
+    $statement->execute([":id" => $cow_id, ":owner_id" => $user_id]);
+    $cow = $statement->fetch(PDO::FETCH_ASSOC);
+    if (!$cow) {
+        return [];
+    }
+    return $cow;
+}
+
 function get_cows(PDO $connection, int $user_id): array
 {
     $statement = $connection->prepare("SELECT * FROM cows WHERE owner_id = :user_id");
@@ -46,6 +65,32 @@ function get_cows(PDO $connection, int $user_id): array
     return $result;
 }
 
+function update_cow(PDO $connection, array $cow_data): bool
+{
+    unset($cow_data[":cow_id"]);
+    unset($cow_data[":name"]);
+    $statement = $connection->prepare(
+        "UPDATE cows SET ins_date = :ins_date, status= :status, due_date= :due_date, next_event= :next_event WHERE id = :id and owner_id = :owner_id"
+    );
+    return $statement->execute($cow_data);
+}
+
 function get_cows_info(PDO $connection, int $user_id) {}
 
-function get_cow(PDO $connection, int $user_id, string $cow_id) {}
+function add_event(PDO $connection, array $event_data): bool
+{
+    $statement = $connection->prepare(
+        "INSERT INTO events(cow_id, date, event, text) VALUES(:cow_id, :date, :event, :text)"
+    );
+    return $statement->execute($event_data);
+}
+
+function get_old_events(PDO $connection, int $cow_id): array
+{
+    $statement = $connection->prepare(
+        "SELECT id, cow_id, date, event, text FROM events WHERE cow_id = :id ORDER BY id DESC"
+    );
+    $statement->execute(["id" => $cow_id]);
+    $events = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return array_map(fn($data) => array_map("htmlspecialchars", $data), $events);
+}
