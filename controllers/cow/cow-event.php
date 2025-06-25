@@ -27,7 +27,7 @@ $ins_date = $cow["ins_date"];
 if (!$ins_date && in_array($_POST["event"], get_events_with_ins_req())) {
     set_flash_messages("cow_errors", ["Dla wybranego zdarzenia krowa musi posiadać datę inseminacji!"]);
     goto redirect;
-} elseif (in_array($_POST["event"], get_events_with_check_req()) && $cow["status"] != "Sprawdzona") {
+} elseif (in_array($_POST["event"], get_events_with_check_req()) && !$cow["due_date"]) {
     set_flash_messages("cow_errors", ["Dla wybranego zdarzenia krowa musi być sprawdzona!"]);
     goto redirect;
 }
@@ -57,7 +57,10 @@ switch ($_POST["event"]) {
     case "Cielna (sprawdzenie)":
         $dt = new DateTime();
         $timestamp = strtotime($cow["ins_date"]);
-        $due_date = $dt->setTimestamp($timestamp)->add(new DateInterval("P287D"))->format("d-m-Y");
+        $due_date = $dt
+            ->setTimestamp($timestamp)
+            ->add(new DateInterval("P{$user["ges_period"]}D"))
+            ->format("d-m-Y");
         $cow["status"] = "Sprawdzona";
         $cow["due_date"] = $due_date;
         break;

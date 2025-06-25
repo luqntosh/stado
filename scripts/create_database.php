@@ -15,6 +15,7 @@ $connection->exec("CREATE TABLE users (
 	email	TEXT NOT NULL,
 	password	TEXT NOT NULL,
 	last_update	INTEGER NOT NULL,
+	ges_period  INTEGER NOT NULL,
 	preg_check	INTEGER NOT NULL,
 	dry_check	INTEGER NOT NULL,
 	due_check	INTEGER NOT NULL,

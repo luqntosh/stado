@@ -25,15 +25,22 @@ if ($user) {
 }
 
 $user = [
+    "ges_period" => 281,
     "preg_check" => 75,
-    "dry_check" => 80,
-    "due_check" => 5,
+    "dry_check" => 90,
+    "due_check" => 14,
 ];
 $user["email"] = $_POST["email"];
 $user["password"] = password_hash($_POST["password"], PASSWORD_BCRYPT);
 $user["last_update"] = time();
 
-$success = create_user($connection, $user);
+$user_data = [];
+
+foreach ($user as $k => $v) {
+    $user_data[":" . $k] = $v;
+}
+
+$success = create_user($connection, $user_data);
 if (!$success) {
     $errors[] = "Błąd podczas tworzenia konta! Spróbuj ponownie później.";
     goto error_route;

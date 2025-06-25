@@ -21,7 +21,7 @@ function get_events_with_ins_req(): array
 
 function get_events_with_check_req(): array
 {
-    return ["Zasuszenie", "Wycielenie"];
+    return ["Zasuszenie"];
 }
 
 function get_statuses(): array

@@ -8,18 +8,10 @@ function get_connection(): PDO
 
 function create_user(PDO $connection, array $data)
 {
-    extract($data);
     $statement = $connection->prepare(
-        "INSERT INTO users(email, password, last_update, preg_check, dry_check, due_check) VALUES(:email, :password, :last_update, :preg_check, :dry_check, :due_check)"
+        "INSERT INTO users(email, password, last_update, ges_period, preg_check, dry_check, due_check) VALUES(:email, :password, :last_update, :ges_period, :preg_check, :dry_check, :due_check)"
     );
-    return $statement->execute([
-        ":email" => $email,
-        ":password" => $password,
-        ":last_update" => $last_update,
-        ":preg_check" => $preg_check,
-        ":dry_check" => $dry_check,
-        ":due_check" => $due_check,
-    ]);
+    return $statement->execute($data);
 }
 
 function get_user(PDO $connection, ?string $email = null): array|false
@@ -33,6 +25,14 @@ function get_user(PDO $connection, ?string $email = null): array|false
     $statment = $connection->prepare("SELECT * FROM users where email = :email");
     $statment->execute(["email" => $email]);
     return $statment->fetch(PDO::FETCH_ASSOC);
+}
+
+function update_user(PDO $connection, array $user_data)
+{
+    $statement = $connection->prepare(
+        "UPDATE users SET last_update = :last_update, ges_period = :ges_period, preg_check = :preg_check, dry_check = :dry_check, due_check = :due_check WHERE id = :id"
+    );
+    return $statement->execute($user_data);
 }
 
 function create_cow(PDO $connection, array $cow_data)
@@ -75,7 +75,30 @@ function update_cow(PDO $connection, array $cow_data): bool
     return $statement->execute($cow_data);
 }
 
-function get_cows_info(PDO $connection, int $user_id) {}
+function update_cow_id(PDO $connection, array $cow_data): bool
+{
+    $statement = $connection->prepare("UPDATE cows SET name = :name, cow_id = :cow_id WHERE id = :id");
+    return $statement->execute($cow_data);
+}
+
+function get_cows_info(PDO $connection, int $user_id): array
+{
+    $statement = $connection->prepare("SELECT status FROM cows WHERE owner_id = :owner_id");
+    $statement->execute([":owner_id" => $user_id]);
+    $cows = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $total = count($cows);
+    $data = [
+        "total" => $total,
+        "Niezacielona" => 0,
+        "Zacielona" => 0,
+        "Sprawdzona" => 0,
+        "Zasuszona" => 0,
+    ];
+    foreach ($cows as $cow) {
+        $data[$cow["status"]] += 1;
+    }
+    return $data;
+}
 
 function add_event(PDO $connection, array $event_data): bool
 {

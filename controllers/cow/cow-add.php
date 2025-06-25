@@ -8,26 +8,6 @@ $cow_id = filter_input(INPUT_POST, "id", FILTER_CALLBACK, [
 ]);
 if ($cow_id === false || $cow_id === null) {
     $errors[] = "Numer indentyfikacyjny musi zawierać 14 znaków!";
-}
-
-if ($_POST["ins_date"]) {
-    $date = validate_date($_POST["ins_date"]);
-    if (!$date) {
-        $errors[] = "Data nie jest poprawna!";
-    }
-}
-
-$statuses = get_statuses();
-if (!in_array($_POST["status"], $statuses)) {
-    $erros[] = "Nie ma takiego stanu!";
-}
-
-if ($errors) {
-    goto error_route;
-}
-
-if (array_search($_POST["status"], $statuses) > 0 && !$_POST["ins_date"]) {
-    $errors[] = "Dla wybranego stanu wymagana jest data.";
     goto error_route;
 }
 
@@ -54,6 +34,6 @@ if (!$result) {
 redirect("/cow?id={$cow_id}");
 
 error_route:
-set_form_data("cow-form", ["id" => $cow_id, "name" => $_POST["name"]]);
+set_form_data("cow-form", ["id" => $_POST["id"], "name" => $_POST["name"]]);
 set_flash_messages("cow_form_errors", $errors);
 redirect("/cow-form");

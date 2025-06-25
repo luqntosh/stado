@@ -33,11 +33,15 @@ require "../templates/components/user-header.php";
         <th scope="row">Data wycielenia:</th>
         <td><?= $cow["due_date"] ?></td>
     </tr>
+    <tr>
+        <th scope="row">Możliwa akcja:</th>
+        <td><?= $cow["next_event"] ?></td>
+    </tr>
     </table>
 </section>
 <section class="grid">
-    <button class="contrast" disabled>Edytuj</button>
-    <button class="secondary" onclick="show_dialog()">Usuń</button>
+    <button class="secondary" type="button" onclick="location.href='/cow-edit?id=<?= $cow["cow_id"] ?>'">Edytuj</button>
+    <button class="secondary" type="button" onclick="show_dialog()">Usuń</button>
     <script src="cow.js"></script>
     <dialog id="del_dialog">
        <article class="small_pad">
