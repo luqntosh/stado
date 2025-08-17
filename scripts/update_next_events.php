@@ -20,14 +20,15 @@ foreach ($users as $user) {
                 );
                 $events = $query->fetchAll();
                 foreach ($events as $event) {
-                    if ($event["event"] == "Ruja" && strtotime($event["date"]) + 20 * $seconds_in_day < time()) {
-                        $next_event = "Inseminacja";
+                    if ($event["event"] == "Ruja") {
+                         if (strtotime($event["date"]) + 20 * $seconds_in_day < time()) {
+                            $next_event = "Inseminacja";
+                            }
                         break;
-                    } elseif (
-                        $event["event"] == "Wycielenie" &&
-                        strtotime($event["date"]) + 42 * $seconds_in_day < time()
-                    ) {
-                        $next_event = "Inseminacja";
+                    } elseif ($event["event"] == "Wycielenie"){
+                        if (strtotime($event["date"]) + 42 * $seconds_in_day < time()) {
+                            $next_event = "Inseminacja";
+                        }
                         break;
                     }
                 }
@@ -53,5 +54,7 @@ foreach ($users as $user) {
         }
     }
     $data = implode("; ", $update_querys);
-    $col = $connection->exec($data);
+    if ($data !== "") {
+        $col = $connection->exec($data);
+    }
 }
